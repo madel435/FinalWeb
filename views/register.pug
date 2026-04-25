@@ -64,6 +64,40 @@ html
         margin-bottom: 1.2rem;
         box-sizing: border-box;
       }
+
+      .pw-wrap { position: relative; margin-bottom: 0.4rem; }
+      .pw-wrap input { margin-bottom: 0; padding-right: 44px; }
+      .pw-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.1rem;
+        color: var(--muted);
+        padding: 0;
+        line-height: 1;
+      }
+
+      .pw-conditions {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.2rem;
+        font-size: 0.75rem;
+      }
+      .pw-conditions li {
+        padding: 2px 0;
+        color: #b06060;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .pw-conditions li.pass { color: #6a9e6a; }
+      .pw-conditions li::before { content: '✗'; font-weight: 700; }
+      .pw-conditions li.pass::before { content: '✓'; }
+
       .btn {
         width: 100%;
         padding: 14px;
@@ -78,6 +112,7 @@ html
         transition: 0.2s;
       }
       .btn:hover { transform: translateY(-2px); }
+
       .error {
         background: #ffe0e0;
         color: #c00;
@@ -86,6 +121,7 @@ html
         font-size: 0.85rem;
         margin-bottom: 1rem;
       }
+
       .links {
         text-align: center;
         margin-top: 1.2rem;
@@ -110,10 +146,17 @@ html
         input(type="text" name="username" id="username" required)
 
         label(for="password") Password
-        input(type="password" name="password" id="password" required)
+        .pw-wrap
+          input(type="password" name="password" id="password" required)
+          button.pw-toggle(type="button" id="pw-toggle" title="Show/hide password") 👁
 
-        label(for="email") Email (optional)
-        input(type="email" name="email" id="email" placeholder="for reminders")
+        ul.pw-conditions
+          li#cond-len At least 8 characters
+          li#cond-upper One uppercase letter
+          li#cond-num One number
+
+        label(for="email") Email For Checklist reminders
+        input(type="email" name="email" id="email" placeholder="doe@example.com")
 
         button.btn(type="submit") Create Account
 
@@ -123,3 +166,28 @@ html
         br
         br
         a(href="/") ← Back to Home
+
+    script.
+      document.addEventListener('DOMContentLoaded', () => {
+        const pwInput   = document.getElementById('password');
+        const toggle    = document.getElementById('pw-toggle');
+        const condLen   = document.getElementById('cond-len');
+        const condUpper = document.getElementById('cond-upper');
+        const condNum   = document.getElementById('cond-num');
+        let visible = false;
+
+        toggle.textContent = '👁';
+
+        toggle.addEventListener('click', () => {
+          visible = !visible;
+          pwInput.type = visible ? 'text' : 'password';
+          toggle.textContent = visible ? '👁' : '👁';
+        });
+
+        pwInput.addEventListener('input', () => {
+          const v = pwInput.value;
+          condLen.classList.toggle('pass', v.length >= 8);
+          condUpper.classList.toggle('pass', /[A-Z]/.test(v));
+          condNum.classList.toggle('pass', /[0-9]/.test(v));
+        });
+      });
