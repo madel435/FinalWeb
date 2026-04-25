@@ -1,0 +1,137 @@
+doctype html
+html
+  head
+    title Finance IQ — Know Your Money
+    style.
+      :root {
+        --accent: #8E758A;
+        --bg: #FAF8F4;
+        --card: #BAC6B2;
+        --border: #BAC6B2;
+        --text: #68405F;
+        --muted: #858E7B;
+        --radius: 14px;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Space Mono', monospace;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .container { max-width: 920px; width: 100%; }
+      .header { text-align: center; margin-bottom: 3rem; }
+      .logo {
+        font-family: 'Syne', sans-serif;
+        font-weight: 800;
+        font-size: clamp(2.8rem, 8vw, 4.5rem);
+        background: linear-gradient(135deg, #8E758A, #C4B8D4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1;
+        margin-bottom: 0.6rem;
+      }
+      .tagline { color: var(--muted); font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 1.2rem; }
+      .description { color: var(--muted); font-size: 0.92rem; line-height: 1.7; max-width: 560px; margin: 0 auto; }
+
+      /* Nav bar */
+      .nav-bar { display: flex; justify-content: flex-end; align-items: center; gap: 1rem; margin-bottom: 1.5rem; font-size: 0.82rem; flex-wrap: wrap; }
+      .nav-bar a { color: var(--accent); text-decoration: none; }
+      .nav-bar a:hover { text-decoration: underline; }
+      .nav-user { color: var(--muted); }
+
+      /* Cards */
+      .quiz-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+      @media (max-width: 640px) { .quiz-cards { grid-template-columns: 1fr; } }
+      .quiz-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+      }
+      .quiz-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 12px 40px rgba(142,117,138,0.15); }
+      .quiz-card h2 { font-family: 'Syne', sans-serif; font-size: 1.2rem; color: var(--accent); margin: 0; }
+      .quiz-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.7; flex: 1; margin: 0; }
+      .btn {
+        display: block;
+        background: var(--accent);
+        color: #FAF8F4;
+        font-family: 'Syne', sans-serif;
+        font-weight: 700;
+        font-size: 0.92rem;
+        padding: 13px 22px;
+        border-radius: 50px;
+        border: none;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        letter-spacing: 0.03em;
+        margin-top: 0.5rem;
+        transition: transform 0.15s, box-shadow 0.15s;
+      }
+      .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(142,117,138,0.25); }
+      .footer { text-align: center; color: var(--muted); font-size: 0.78rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+
+  body
+    .container
+      .nav-bar
+        if loggedIn
+          span.nav-user 👤 #{username}
+          a(href="/checklist") 📋 My Checklist
+          a(href="/logout") Sign Out
+        else
+          a(href="/Quiz2/login") Sign In
+          a(href="/register") Register
+
+      .header
+        .logo Finance IQ
+        p.tagline Know your money. Own your future.
+        p.description Two ways to assess your financial literacy. Pick the quiz that fits — knowledge test or self-reflection.
+
+      .quiz-cards
+        .quiz-card
+          h2  Financial Knowledge Quiz
+          p Multiple-choice questions covering budgeting, investing, credit, and taxes. Get instant feedback and learn why each answer matters.
+          a.btn(href="/Quiz1/quiz1") Take the Knowledge Quiz →
+
+        .quiz-card
+          h2  Financial Self Assessment
+          p Rate yourself on a 1–5 scale across 15 financial habits. Get personalized guidance on areas to improve.
+          a.btn(href="/Quiz2/login") Take the Self Assessment →
+
+        .quiz-card
+          h2  General Resources
+          p Links to financial literacy tools, budgeting guides, and trusted resources. We are not financial advisors — research at your own risk.
+          a.btn(href="/resourcepage") Resource Page →
+
+        .quiz-card
+          h2  Financial Advisor
+          p Get connected with a Financial Advisor. Bring your quiz results to discuss your personal financial goals.
+          a.btn(href="/FAdvisor") Find a Financial Advisor →
+
+        .quiz-card
+          h2  My Checklist
+          p
+            if loggedIn
+              | Track and check off your improvement goals based on your quiz results.
+            else
+              | Sign in to access your personal improvement checklist from your quiz results.
+          if loggedIn
+            a.btn(href="/checklist") Open My Checklist →
+          else
+            a.btn(href="/Quiz2/login?redirect=/checklist") Sign In to View Checklist →
+
+        .quiz-card
+          h2  Feedback
+          p Share your thoughts on Finance IQ. Help us improve the quizzes and resources for everyone.
+          a.btn(href="/feedback") Leave Feedback →
+
+      .footer
+        | Finance IQ — for educational purposes only. Not financial advice.

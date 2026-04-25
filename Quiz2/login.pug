@@ -1,0 +1,209 @@
+doctype html
+html
+  head
+    title Finance IQ — Sign In
+    style.
+      :root {
+        --accent: #8E758A;
+        --bg: #FAF8F4;
+        --card: #BAC6B2;
+        --border: #BAC6B2;
+        --text: #68405F;
+        --muted: #858E7B;
+        --radius: 14px;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Space Mono', monospace;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .container {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 2.5rem;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 0 40px rgba(0,0,0,0.1);
+      }
+      .logo {
+        font-family: 'Syne', sans-serif;
+        font-weight: 800;
+        font-size: 2rem;
+        background: linear-gradient(135deg, #8E758A, #C4B8D4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.3rem;
+      }
+      .subtitle {
+        color: var(--muted);
+        font-size: 0.8rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 2rem;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        margin-bottom: 0.4rem;
+        color: var(--text);
+      }
+      input {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: #FAF8F4;
+        color: #68405F;
+        font-size: 0.9rem;
+        margin-bottom: 1.2rem;
+        box-sizing: border-box;
+      }
+
+      .pw-wrap { position: relative; margin-bottom: 0.4rem; }
+      .pw-wrap input { margin-bottom: 0; padding-right: 48px; }
+      .pw-toggle {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.1rem;
+        color: var(--muted);
+        padding: 6px;
+        line-height: 1;
+      }
+
+      .pw-conditions {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.2rem;
+        font-size: 0.75rem;
+      }
+      .pw-conditions li {
+        padding: 2px 0;
+        color: #b06060;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+      }
+      .pw-conditions li.pass { color: #6a9e6a; }
+      .pw-conditions li::before { content: '✗'; font-weight: 700; }
+      .pw-conditions li.pass::before { content: '✓'; }
+
+      .btn {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 50px;
+        background: var(--accent);
+        color: #FAF8F4;
+        font-family: 'Syne', sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .btn:hover { transform: translateY(-2px); }
+
+      .error {
+        background: #ffe0e0;
+        color: #c00;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+      }
+
+      .links {
+        text-align: center;
+        margin-top: 1.2rem;
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+      .links a { color: var(--accent); text-decoration: none; }
+
+  body
+    .container
+      .logo Finance IQ
+      p.subtitle Sign In
+
+      if error
+        .error= error
+
+      form(action="/login" method="POST" novalidate)
+        label(for="username") Username
+        input(type="text" name="username" id="username" required autocomplete="username")
+
+        label(for="password") Password
+        .pw-wrap
+          input(type="password" name="password" id="password" required aria-describedby="pw-conditions" autocomplete="current-password")
+          button.pw-toggle(type="button" id="pw-toggle" title="Show password" aria-pressed="false" aria-label="Show password") 👁
+
+        ul.pw-conditions(id="pw-conditions" aria-live="polite")
+          li#cond-len At least 8 characters
+          li#cond-upper One uppercase letter
+          li#cond-num One number
+
+        button.btn(type="submit") Sign In
+
+      .links
+        | Need an account? &nbsp;
+        a(href="/register") Create one
+        br
+        br
+        a(href="/") ← Back to Home
+
+    script.
+      document.addEventListener('DOMContentLoaded', () => {
+        const pwInput   = document.getElementById('password');
+        const toggle    = document.getElementById('pw-toggle');
+        const condLen   = document.getElementById('cond-len');
+        const condUpper = document.getElementById('cond-upper');
+        const condNum   = document.getElementById('cond-num');
+        const form      = document.querySelector('form');
+        let visible = false;
+
+        // EXACT SAME SYMBOL FOR BOTH STATES AS REQUESTED
+        const ICON = '👁';
+
+        toggle.textContent = ICON;
+        toggle.setAttribute('aria-pressed', 'false');
+        toggle.setAttribute('aria-label', 'Show password');
+
+        toggle.addEventListener('click', (e) => {
+          e.preventDefault();
+          visible = !visible;
+          pwInput.type = visible ? 'text' : 'password';
+          // keep the symbol identical for both states
+          toggle.textContent = ICON;
+          toggle.setAttribute('aria-pressed', String(visible));
+          toggle.setAttribute('aria-label', visible ? 'Hide password' : 'Show password');
+        });
+
+        pwInput.addEventListener('input', () => {
+          const v = pwInput.value;
+          condLen.classList.toggle('pass', v.length >= 8);
+          condUpper.classList.toggle('pass', /[A-Z]/.test(v));
+          condNum.classList.toggle('pass', /[0-9]/.test(v));
+        });
+
+        form.addEventListener('submit', (e) => {
+          const v = pwInput.value;
+          const ok = v.length >= 8 && /[A-Z]/.test(v) && /[0-9]/.test(v);
+          if (!ok) {
+            e.preventDefault();
+            alert('Password must be at least 8 characters, include an uppercase letter and a number.');
+            pwInput.focus();
+          }
+        });
+      });
+
+

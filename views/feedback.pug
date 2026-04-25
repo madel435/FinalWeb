@@ -1,0 +1,75 @@
+doctype html
+html
+  head
+    title Finance IQ — Feedback
+    style.
+      :root {
+        --accent: #8E758A;
+        --bg: #FAF8F4;
+        --card: #BAC6B2;
+        --border: #BAC6B2;
+        --text: #68405F;
+        --muted: #858E7B;
+        --radius: 14px;
+      }
+      body { background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; }
+      .container { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2.5rem; width: 100%; max-width: 500px; box-shadow: 0 0 40px rgba(142,117,138,0.1); }
+      .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; background: linear-gradient(135deg, #8E758A, #C4B8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.3rem; }
+      .subtitle { color: var(--muted); font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 2rem; }
+      label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--text); }
+      input, textarea, select {
+        width: 100%; padding: 12px 14px; border-radius: 10px;
+        border: 1px solid var(--border); background: #FAF8F4;
+        color: #68405F; font-size: 0.9rem; margin-bottom: 1.2rem;
+        box-sizing: border-box; font-family: 'Space Mono', monospace;
+      }
+      textarea { resize: vertical; min-height: 100px; }
+      .stars-row { display: flex; gap: 0.5rem; margin-bottom: 1.2rem; }
+      .star-pick { font-size: 1.6rem; cursor: pointer; color: #c8bdc6; transition: color 0.1s; }
+      .star-pick.active { color: #8E758A; }
+      .btn { width: 100%; padding: 14px; border: none; border-radius: 50px; background: var(--accent); color: #FAF8F4; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: 0.2s; }
+      .btn:hover { transform: translateY(-2px); }
+      .success { background: #e4f5e4; color: #3a7a3a; padding: 12px 16px; border-radius: 10px; font-size: 0.88rem; margin-bottom: 1rem; text-align: center; }
+      .links { text-align: center; margin-top: 1.2rem; font-size: 0.82rem; color: var(--muted); }
+      .links a { color: var(--accent); text-decoration: none; }
+
+  body
+    .container
+      .logo Finance IQ
+      p.subtitle Share Your Feedback
+
+      if success
+        .success ✅ Thank you for your feedback!
+
+      if !success
+        form(action="/feedback" method="POST")
+          label(for="name") Your Name (optional)
+          input(type="text" name="name" id="name" placeholder="Anonymous")
+
+          label Overall Rating
+          .stars-row#stars-row
+            span.star-pick(data-val="1") ★
+            span.star-pick(data-val="2") ★
+            span.star-pick(data-val="3") ★
+            span.star-pick(data-val="4") ★
+            span.star-pick(data-val="5") ★
+          input(type="hidden" name="rating" id="rating-input" value="0")
+
+          label(for="message") What would you like to share?
+          textarea(name="message" id="message" required placeholder="Your thoughts on the quizzes, resources, or anything else…")
+
+          button.btn(type="submit") Submit Feedback
+
+      .links
+        a(href="/") ← Back to Home
+
+    script.
+      document.querySelectorAll('.star-pick').forEach(star => {
+        star.addEventListener('click', () => {
+          const val = parseInt(star.dataset.val);
+          document.getElementById('rating-input').value = val;
+          document.querySelectorAll('.star-pick').forEach(s => {
+            s.classList.toggle('active', parseInt(s.dataset.val) <= val);
+          });
+        });
+      });

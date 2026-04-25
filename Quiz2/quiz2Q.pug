@@ -1,0 +1,195 @@
+doctype html
+html
+  head
+    title Finance IQ — Self Assessment
+    style.
+      :root {
+        --accent: #8E758A;
+        --bg: #FAF8F4;
+        --card: #BAC6B2;
+        --border: #BAC6B2;
+        --text: #68405F;
+        --muted: #858E7B;
+        --radius: 14px;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Space Mono', monospace;
+        min-height: 100vh;
+        padding: 2rem;
+      }
+      #app { width: 100%; max-width: 640px; margin: 0 auto; }
+
+      .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; background: linear-gradient(135deg, #8E758A, #C4B8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin-bottom: 0.2rem; }
+      .page-sub { text-align: center; font-size: 0.78rem; color: var(--muted); margin-bottom: 1.5rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+      /* Progress bar */
+      .progress-wrap {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 50px;
+        height: 36px;
+        margin-bottom: 0.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .progress-fill { height: 100%; background: linear-gradient(90deg, #8E758A, #C4B8D4); border-radius: 50px; transition: width 0.4s ease; width: 0%; }
+      .progress-money { position: absolute; top: 50%; transform: translate(-50%, -50%); font-size: 1.4rem; transition: left 0.4s ease; left: 0%; pointer-events: none; }
+      .progress-label { text-align: center; font-size: 0.75rem; color: var(--muted); margin-bottom: 1.2rem; }
+
+      .question-block {
+        border: 1px solid var(--border);
+        background: var(--card);
+        padding: 1.2rem;
+        border-radius: var(--radius);
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transition: border-color 0.2s;
+      }
+      .question-block.answered { border-color: #8E758A; }
+      .q-num { font-size: .72rem; color: var(--muted); margin-bottom: 6px; }
+      .q-num-badge { background: #8E758A; color: #FAF8F4; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.68rem; padding: 2px 8px; border-radius: 50px; }
+      .question-text { font-size: .95rem; font-weight: 600; margin-bottom: 14px; color: var(--text); }
+
+      .stars { display: flex; justify-content: center; gap: 8px; }
+      .star-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 4px;
+        border-radius: 8px;
+        transition: background 0.1s;
+      }
+      .star-btn:hover { background: rgba(142,117,138,0.1); }
+      .star { font-size: 1.6rem; color: #c8bdc6; transition: color 0.15s; }
+      .num { font-size: .68rem; color: var(--muted); }
+      .star-btn.active .star { color: #8E758A; }
+      .star-btn.active .num { color: #8E758A; font-weight: 700; }
+
+      .submit-wrap { text-align: center; margin-top: 1.5rem; }
+      .btn {
+        background: var(--accent);
+        color: #FAF8F4;
+        padding: 13px 40px;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-family: 'Syne', sans-serif;
+        font-weight: 700;
+        transition: transform 0.15s, box-shadow 0.15s;
+      }
+      .btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(142,117,138,0.25); }
+      .btn:disabled { opacity: .4; cursor: not-allowed; }
+      .counter { margin-top: 10px; font-size: .78rem; color: var(--muted); }
+
+  body
+    #app
+      .logo Finance IQ
+      p.page-sub Rate each statement from 1 to 5
+
+      .progress-wrap
+        .progress-fill#progress-fill
+        .progress-money#progress-money 💰
+      p.progress-label#progress-label 0 of 15 answered
+
+    script.
+      const questions = [
+        "I keep track of how much money I spend each week.",
+        "Before I buy something, I check whether I have enough money.",
+        "I set aside money regularly so I can buy something I want later.",
+        "I find it easy to resist spending now in order to save for the future.",
+        "I feel confident that I understand what a bank account is and how it works.",
+        "I understand the difference between a debit card and a credit card.",
+        "I know what interest means when borrowing or saving money.",
+        "I understand that people earn money in different ways.",
+        "When I buy something, I compare prices before deciding.",
+        "Advertisements influence what I decide to buy.",
+        "I think carefully about whether I need something before I buy it.",
+        "I feel confident making a payment using a phone or electronic device.",
+        "I know how to keep my personal information safe when paying online.",
+        "I believe it is important for young people to understand how money works.",
+        "I feel in control of my financial decisions."
+      ];
+      const total = questions.length;
+      const ratings = {};
+
+      const app = document.getElementById('app');
+      const progressFill = document.getElementById('progress-fill');
+      const progressMoney = document.getElementById('progress-money');
+      const progressLabel = document.getElementById('progress-label');
+
+      // Build question blocks
+      questions.forEach((q, i) => {
+        const block = document.createElement('div');
+        block.className = 'question-block';
+        block.dataset.q = i;
+        let starsHtml = '';
+        [1,2,3,4,5].forEach(val => {
+          starsHtml += `<button class="star-btn" type="button" data-q="${i}" data-val="${val}"><span class="star">★</span><span class="num">${val}</span></button>`;
+        });
+        block.innerHTML = `
+          <div class="q-num"><span class="q-num-badge">Q${i+1}</span></div>
+          <p class="question-text">${q}</p>
+          <div class="stars">${starsHtml}</div>`;
+        app.appendChild(block);
+      });
+
+      // Submit + counter
+      const submitWrap = document.createElement('div');
+      submitWrap.className = 'submit-wrap';
+      submitWrap.innerHTML = `
+        <button id="submit-btn" class="btn" disabled>Submit Quiz</button>
+        <p class="counter"><span id="answered">0</span> of ${total} answered</p>`;
+      app.appendChild(submitWrap);
+
+      function updateProgress() {
+        const answered = Object.keys(ratings).length;
+        const pct = (answered / total) * 100;
+        progressFill.style.width = pct + '%';
+        progressMoney.style.left = Math.min(pct, 96) + '%';
+        progressLabel.textContent = answered + ' of ' + total + ' answered';
+        document.getElementById('answered').textContent = answered;
+        document.getElementById('submit-btn').disabled = answered < total;
+      }
+
+      // Star click — fill 1 through clicked value
+      document.addEventListener('click', e => {
+        const btn = e.target.closest('.star-btn');
+        if (!btn) return;
+        const q = parseInt(btn.dataset.q);
+        const val = parseInt(btn.dataset.val);
+        ratings[q] = val;
+
+        // Fill all stars 1..val, clear above
+        const block = document.querySelector(`.question-block[data-q="${q}"]`);
+        block.querySelectorAll('.star-btn').forEach(b => {
+          b.classList.toggle('active', parseInt(b.dataset.val) <= val);
+        });
+        block.classList.add('answered');
+        updateProgress();
+      });
+
+      // Submit
+      document.getElementById('submit-btn').addEventListener('click', () => {
+        const total_score = Object.values(ratings).reduce((a, b) => a + b, 0);
+        const ratingsArr = questions.map((_, i) => ratings[i] || 0);
+        sessionStorage.setItem('q2ratings', JSON.stringify(ratingsArr));
+        sessionStorage.setItem('q2score', total_score);
+        fetch('/Quiz2/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ score: total_score, ratings: ratingsArr }),
+        }).then(() => {
+          window.location.href = '/Quiz2/results';
+        });
+      });
+
+      updateProgress();

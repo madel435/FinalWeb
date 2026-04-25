@@ -1,0 +1,129 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Finance IQ — Resources
+    style.
+      :root {
+        --accent: #8E758A;
+        --bg: #FAF8F4;
+        --card: #BAC6B2;
+        --border: #BAC6B2;
+        --text: #68405F;
+        --muted: #858E7B;
+        --radius: 14px;
+      }
+      body { background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; min-height: 100vh; padding: 2rem; }
+      .container { max-width: 860px; margin: 0 auto; }
+      .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; background: linear-gradient(135deg, #8E758A, #C4B8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+      .tagline { text-align: center; color: var(--muted); font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.6rem; }
+      .disclaimer { text-align: center; background: #fdf0e0; border: 1px solid #e0c090; color: #7a5a20; font-size: 0.78rem; padding: 8px 14px; border-radius: 8px; margin-bottom: 2rem; }
+
+      .section-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; color: var(--accent); margin: 2rem 0 0.8rem; border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
+
+      .resource-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+      @media (max-width: 600px) { .resource-grid { grid-template-columns: 1fr; } }
+
+      .resource-card {
+        background: var(--card); border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 1.1rem 1.3rem;
+        transition: transform 0.15s, border-color 0.15s;
+        text-decoration: none; display: block; color: var(--text);
+      }
+      .resource-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+      .rc-title { font-family: 'Syne', sans-serif; font-size: 0.95rem; color: var(--accent); margin-bottom: 0.3rem; }
+      .rc-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+      .rc-url { font-size: 0.7rem; color: var(--border); margin-top: 0.4rem; word-break: break-all; }
+
+      .btn-row { display: flex; justify-content: center; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; }
+      .btn { padding: 12px 24px; border-radius: 50px; border: none; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; text-decoration: none; transition: transform 0.15s; display: inline-block; text-align: center; }
+      .btn-primary { background: var(--accent); color: #FAF8F4; }
+      .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+      .btn:hover { transform: translateY(-2px); }
+
+  body
+    .container
+      .logo Finance IQ
+      p.tagline Financial Resources
+      p.disclaimer ⚠️ We are not financial advisors. All resources are for educational purposes only. Do your own research.
+
+      h3.section-title  Government & Official Resources
+      .resource-grid
+        a.resource-card(href="https://consumer.gov" target="_blank")
+          .rc-title Consumer.gov
+          .rc-desc Plain-language guides from the US government on budgeting, credit, debt, and protecting your money.
+          .rc-url consumer.gov
+        a.resource-card(href="https://www.mymoney.gov" target="_blank")
+          .rc-title MyMoney.gov
+          .rc-desc Federal financial literacy tools, calculators, and guides from the Financial Literacy and Education Commission.
+          .rc-url mymoney.gov
+        a.resource-card(href="https://www.consumerfinance.gov" target="_blank")
+          .rc-title CFPB — Consumer Financial Protection Bureau
+          .rc-desc Official US consumer finance regulator with tools for budgeting, mortgages, student loans, and more.
+          .rc-url consumerfinance.gov
+        a.resource-card(href="https://www.irs.gov/individuals" target="_blank")
+          .rc-title IRS — Individual Taxes
+          .rc-desc Official IRS guides on filing taxes, deductions, credits, and understanding your tax bracket.
+          .rc-url irs.gov
+
+      h3.section-title  Learning & Education
+      .resource-grid
+        a.resource-card(href="https://www.investopedia.com" target="_blank")
+          .rc-title Investopedia
+          .rc-desc The largest financial dictionary and education site. Covers everything from budgeting basics to options trading.
+          .rc-url investopedia.com
+        a.resource-card(href="https://www.khanacademy.org/economics-finance-domain/core-finance" target="_blank")
+          .rc-title Khan Academy — Finance
+          .rc-desc Free courses on personal finance, banking, credit, and investing. Beginner-friendly and self-paced.
+          .rc-url khanacademy.org
+        a.resource-card(href="https://www.nerdwallet.com" target="_blank")
+          .rc-title NerdWallet
+          .rc-desc Guides, comparisons, and calculators for credit cards, loans, savings accounts, and investing.
+          .rc-url nerdwallet.com
+        a.resource-card(href="https://www.bankrate.com" target="_blank")
+          .rc-title Bankrate
+          .rc-desc Rate comparisons, financial calculators, and plain-English articles on savings, mortgages, and CDs.
+          .rc-url bankrate.com
+
+      h3.section-title  Budgeting & Tools
+      .resource-grid
+        a.resource-card(href="https://www.mint.com" target="_blank")
+          .rc-title Mint (by Intuit)
+          .rc-desc Free budgeting and expense-tracking app that connects to your bank accounts and categorizes spending.
+          .rc-url mint.com
+        a.resource-card(href="https://www.youneedabudget.com" target="_blank")
+          .rc-title YNAB — You Need A Budget
+          .rc-desc Zero-based budgeting software that helps you assign every dollar a job.
+          .rc-url youneedabudget.com
+        a.resource-card(href="https://www.smartaboutmoney.org" target="_blank")
+          .rc-title Smart About Money
+          .rc-desc NEFE-powered site with free financial courses, worksheets, and life-stage guidance.
+          .rc-url smartaboutmoney.org
+        a.resource-card(href="https://bettermoneyhabits.bankofamerica.com" target="_blank")
+          .rc-title Better Money Habits — BofA
+          .rc-desc Free videos and articles on budgeting, credit, saving, and home buying from Bank of America & Khan Academy.
+          .rc-url bettermoneyhabits.bankofamerica.com
+
+      h3.section-title  Investing Basics
+      .resource-grid
+        a.resource-card(href="https://www.investor.gov" target="_blank")
+          .rc-title Investor.gov — SEC
+          .rc-desc Official SEC investor education site with compound interest calculators and fraud alerts.
+          .rc-url investor.gov
+        a.resource-card(href="https://www.bogleheads.org/wiki/Getting_started" target="_blank")
+          .rc-title Bogleheads Wiki — Getting Started
+          .rc-desc Community-driven investing wiki built around low-cost index fund principles.
+          .rc-url bogleheads.org
+        a.resource-card(href="https://www.reddit.com/r/personalfinance/wiki/index/" target="_blank")
+          .rc-title r/PersonalFinance Wiki
+          .rc-desc Crowd-sourced personal finance guide covering budgeting, debt payoff, investing, and retirement.
+          .rc-url reddit.com/r/personalfinance
+        a.resource-card(href="https://www.schwab.com/learn" target="_blank")
+          .rc-title Charles Schwab — Learning Center
+          .rc-desc Free articles and videos on stocks, ETFs, retirement accounts, and market basics.
+          .rc-url schwab.com/learn
+
+      .btn-row
+        a.btn.btn-secondary(href="/") ← Back to Home
+        a.btn.btn-primary(href="/FAdvisor") Find a Financial Advisor →

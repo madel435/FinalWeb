@@ -1,0 +1,113 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Finance IQ — Financial Advisors
+    style.
+      :root {
+        --accent: #8E758A;
+        --bg: #FAF8F4;
+        --card: #BAC6B2;
+        --border: #BAC6B2;
+        --text: #68405F;
+        --muted: #858E7B;
+        --radius: 14px;
+      }
+      body { background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; min-height: 100vh; padding: 2rem; }
+      .container { max-width: 860px; margin: 0 auto; }
+      .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; background: linear-gradient(135deg, #8E758A, #C4B8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+      .tagline { text-align: center; color: var(--muted); font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.6rem; }
+      .intro { text-align: center; color: var(--muted); font-size: 0.88rem; line-height: 1.7; max-width: 600px; margin: 0 auto 0.8rem; }
+      .disclaimer { text-align: center; background: #fdf0e0; border: 1px solid #e0c090; color: #7a5a20; font-size: 0.78rem; padding: 8px 14px; border-radius: 8px; margin-bottom: 2rem; }
+
+      .section-title { font-family: 'Syne', sans-serif; font-size: 1.05rem; color: var(--accent); margin: 2rem 0 0.8rem; border-bottom: 1px solid var(--border); padding-bottom: 0.4rem; }
+
+      .advisor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+      @media (max-width: 600px) { .advisor-grid { grid-template-columns: 1fr; } }
+
+      .advisor-card {
+        background: var(--card); border: 1px solid var(--border);
+        border-radius: var(--radius); padding: 1.2rem 1.4rem;
+        transition: transform 0.15s, border-color 0.15s;
+        text-decoration: none; display: block; color: var(--text);
+      }
+      .advisor-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+      .ac-title { font-family: 'Syne', sans-serif; font-size: 0.95rem; color: var(--accent); margin-bottom: 0.3rem; }
+      .ac-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+      .ac-url { font-size: 0.7rem; color: var(--border); margin-top: 0.4rem; }
+
+      .tip-box {
+        background: var(--card); border: 1px solid var(--border);
+        border-left: 4px solid var(--accent);
+        border-radius: var(--radius); padding: 1rem 1.3rem;
+        margin-bottom: 0.8rem;
+      }
+      .tip-title { font-family: 'Syne', sans-serif; font-size: 0.9rem; color: var(--text); margin-bottom: 0.3rem; }
+      .tip-body { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+
+      .btn-row { display: flex; justify-content: center; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; }
+      .btn { padding: 12px 24px; border-radius: 50px; border: none; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; text-decoration: none; transition: transform 0.15s; display: inline-block; text-align: center; }
+      .btn-primary { background: var(--accent); color: #FAF8F4; }
+      .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+      .btn:hover { transform: translateY(-2px); }
+
+  body
+    .container
+      .logo Finance IQ
+      p.tagline Find a Financial Advisor
+      p.intro Bring your quiz results to a real financial advisor to make your goals actionable. Below are tools and directories to find certified professionals.
+      p.disclaimer ⚠️ Finance IQ does not endorse any specific advisor or service. Always verify credentials before sharing financial information.
+
+      h3.section-title  Advisor Directories
+      .advisor-grid
+        a.advisor-card(href="https://www.napfa.org/financial-advisor" target="_blank")
+          .ac-title NAPFA — Find a Fee-Only Advisor
+          .ac-desc The National Association of Personal Financial Advisors. Fee-only means no commissions — they work for you.
+          .ac-url napfa.org
+        a.advisor-card(href="https://www.cfp.net/find-a-cfp-professional" target="_blank")
+          .ac-title CFP Board — Find a CFP®
+          .ac-desc Search for Certified Financial Planner professionals by location. The CFP® mark signals rigorous training and ethics.
+          .ac-url cfp.net
+        a.advisor-card(href="https://www.garrettplanningnetwork.com" target="_blank")
+          .ac-title Garrett Planning Network
+          .ac-desc Hourly, fee-only advisors. Great for one-time consultations without a long-term commitment.
+          .ac-url garrettplanningnetwork.com
+        a.advisor-card(href="https://www.nfec.org/find-a-financial-educator" target="_blank")
+          .ac-title NFEC — Financial Educators
+          .ac-desc The National Financial Educators Council connects individuals with local financial education specialists.
+          .ac-url nfec.org
+
+      h3.section-title Online 
+      .advisor-grid
+        a.advisor-card(href="https://www.betterment.com" target="_blank")
+          .ac-title Betterment
+          .ac-desc Automated investing with optional human advisor access. Good for beginners starting with investing.
+          .ac-url betterment.com
+        a.advisor-card(href="https://investor.vanguard.com/advice/personal-advisor" target="_blank")
+          .ac-title Vanguard Personal Advisor Services
+          .ac-desc Low-cost hybrid robo + human advisory service from one of the world's largest investment firms.
+          .ac-url vanguard.com
+        a.advisor-card(href="https://www.wealthfront.com" target="_blank")
+          .ac-title Wealthfront
+          .ac-desc Automated financial planning and investing. Free financial planning tools available without an account.
+          .ac-url wealthfront.com
+        a.advisor-card(href="https://smartasset.com/retirement/find-a-financial-planner" target="_blank")
+          .ac-title SmartAsset Advisor Match
+          .ac-desc Free service that matches you with up to 3 vetted local financial advisors based on your needs.
+          .ac-url smartasset.com
+
+      h3.section-title  Tips for Working With an Advisor
+      .tip-box
+        .tip-title  Bring Your Quiz Results
+        .tip-body Print or screenshot your Finance IQ results. Your score, weak areas, and checklist give the advisor a concrete starting point for your financial plan.
+      .tip-box
+        .tip-title  Questions to Ask
+        .tip-body "Are you a fiduciary?" (required to act in your best interest) · "How are you compensated?" · "What is your area of specialization?" · "Can you work with my budget?"
+      .tip-box
+        .tip-title ✅ What to Bring
+        .tip-body Monthly income and expenses · List of debts (balances and interest rates) · Current savings and investment accounts · Your financial goals (short-term and long-term)
+
+      .btn-row
+        a.btn.btn-secondary(href="/") ← Back to Home
+        a.btn.btn-primary(href="/resourcepage") ← General Resources

@@ -1,0 +1,145 @@
+doctype html
+html
+  head
+    title Finance IQ — Self Assessment Results
+    style.
+      :root {
+        --accent: #8E758A;
+        --bg: #FAF8F4;
+        --card: #BAC6B2;
+        --border: #BAC6B2;
+        --text: #68405F;
+        --muted: #858E7B;
+        --radius: 14px;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Space Mono', monospace;
+        min-height: 100vh;
+        padding: 2rem;
+      }
+      .container { max-width: 720px; margin: 0 auto; }
+      .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; background: linear-gradient(135deg, #8E758A, #C4B8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+      .tagline { text-align: center; color: var(--muted); font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 2rem; }
+
+      .score-wrap { display: flex; flex-direction: column; align-items: center; margin: 1rem 0 2rem; }
+      .score-circle {
+        width: 140px; height: 140px; border-radius: 50%;
+        background: linear-gradient(135deg, #8E758A, #C4B8D4);
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        color: #FAF8F4; margin-bottom: 0.7rem;
+        box-shadow: 0 8px 30px rgba(142,117,138,0.3);
+      }
+      .score-num { font-family: 'Syne', sans-serif; font-size: 2.4rem; font-weight: 800; line-height: 1; }
+      .score-sub { font-size: 0.68rem; opacity: 0.85; letter-spacing: 0.1em; }
+      .score-raw { color: var(--muted); font-size: 0.82rem; }
+
+      .section-title { font-family: 'Syne', sans-serif; font-size: 1rem; color: var(--accent); margin: 1.5rem 0 0.6rem; }
+
+      /* Rating bars */
+      .rating-list { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.5rem; }
+      .rating-row { display: flex; align-items: center; gap: 0.8rem; }
+      .rating-label { font-size: 0.78rem; color: var(--text); min-width: 200px; flex: 1; }
+      .rating-bar-wrap { flex: 1; background: #e8e4df; border-radius: 50px; height: 10px; overflow: hidden; }
+      .rating-bar { height: 100%; border-radius: 50px; transition: width 0.6s ease; }
+      .rating-val { font-size: 0.75rem; color: var(--muted); min-width: 18px; text-align: right; }
+
+      /* Suggestions */
+      .suggestion-list { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1.5rem; }
+      .suggestion-card {
+        background: var(--card); border: 1px solid var(--border);
+        border-left: 4px solid #b06060;
+        border-radius: var(--radius); padding: 0.9rem 1.1rem;
+      }
+      .suggestion-card.ok { border-left-color: #6a9e6a; }
+      .sug-title { font-family: 'Syne', sans-serif; font-size: 0.88rem; color: var(--text); margin-bottom: 0.2rem; }
+      .sug-body { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+
+      .btn-row { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+      .btn { padding: 13px 26px; border-radius: 50px; border: none; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; text-decoration: none; transition: transform 0.15s, box-shadow 0.15s; display: inline-block; text-align: center; }
+      .btn-primary { background: var(--accent); color: #FAF8F4; }
+      .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+      .btn-green { background: #6a9e6a; color: #FAF8F4; }
+      .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(142,117,138,0.2); }
+
+  body
+    .container
+      .logo Finance IQ
+      p.tagline Self Assessment Results
+
+      .score-wrap
+        .score-circle
+          span.score-num#score-num —
+          span.score-sub OUT OF 75
+        p.score-raw#score-raw Loading…
+
+      h3.section-title 📊 Your Ratings
+      .rating-list#rating-list
+
+      h3.section-title 💡 Areas to Work On
+      .suggestion-list#suggestion-list
+
+      .btn-row
+        a.btn.btn-secondary(href="/") ← Back to Home
+        a.btn.btn-primary(href="/checklist") 📋 Go to Checklist
+        a.btn.btn-green(href="/Quiz1/quiz1") Take Knowledge Quiz →
+
+    script.
+      const topics = [
+        { label: "Tracking weekly spending",         tip: "Try a spending journal or budgeting app like Mint or YNAB." },
+        { label: "Checking funds before buying",      tip: "Build a habit of checking your balance before any purchase." },
+        { label: "Setting aside savings",             tip: "Set up auto-transfer to savings each payday, even a small amount." },
+        { label: "Delaying gratification",            tip: "Use the 24-hour rule: wait a day before non-essential purchases." },
+        { label: "Understanding bank accounts",       tip: "Visit consumer.gov or your bank's learning center for basics." },
+        { label: "Debit vs credit knowledge",         tip: "Research how interest, credit limits, and fraud protection differ." },
+        { label: "Understanding interest",            tip: "Learn how APR and compound interest work on Khan Academy." },
+        { label: "How people earn money",             tip: "Explore active income, passive income, and investment returns." },
+        { label: "Comparing prices",                  tip: "Always compare 2–3 options before buying; use price-tracking tools." },
+        { label: "Resisting ads",                     tip: "Unsubscribe from marketing emails and ad-heavy apps when possible." },
+        { label: "Needs vs wants thinking",           tip: "Before buying, ask: need or want? Delay wants by 24 hours." },
+        { label: "Digital payment confidence",        tip: "Practice using your bank's app in a safe environment." },
+        { label: "Online payment safety",             tip: "Use strong passwords, 2FA, and never enter card info on unsecured sites." },
+        { label: "Financial literacy value",          tip: "Read one finance article a week — start with Investopedia." },
+        { label: "Financial decision control",        tip: "Create a monthly budget and review it at month-end." },
+      ];
+
+      const ratings = JSON.parse(sessionStorage.getItem('q2ratings') || '[]');
+      const score   = parseInt(sessionStorage.getItem('q2score') || '0');
+
+      document.getElementById('score-num').textContent = score;
+      const pct = Math.round((score / 75) * 100);
+      document.getElementById('score-raw').textContent = score + ' / 75  (' + pct + '%)';
+
+      // Rating bars
+      const ratingList = document.getElementById('rating-list');
+      ratings.forEach((val, i) => {
+        const t = topics[i] || { label: 'Area ' + (i+1) };
+        const color = val <= 2 ? '#b06060' : val === 3 ? '#c4a55a' : '#6a9e6a';
+        ratingList.innerHTML += `
+          <div class="rating-row">
+            <span class="rating-label">${t.label}</span>
+            <div class="rating-bar-wrap">
+              <div class="rating-bar" style="width:${(val/5)*100}%;background:${color}"></div>
+            </div>
+            <span class="rating-val">${val}/5</span>
+          </div>`;
+      });
+
+      // Suggestions for low scores
+      const sugList = document.getElementById('suggestion-list');
+      let hasSuggestions = false;
+      ratings.forEach((val, i) => {
+        const t = topics[i] || { label: 'Area ' + (i+1), tip: '' };
+        if (val <= 2) {
+          hasSuggestions = true;
+          sugList.innerHTML += `
+            <div class="suggestion-card">
+              <div class="sug-title">⚠️ ${t.label} — rated ${val}/5</div>
+              <div class="sug-body">${t.tip}</div>
+            </div>`;
+        }
+      });
+      if (!hasSuggestions) {
+        sugList.innerHTML = '<div class="suggestion-card ok"><div class="sug-title">✅ Great job!</div><div class="sug-body">You rated all areas 3 or above. Keep building on your strengths!</div></div>';
+      }

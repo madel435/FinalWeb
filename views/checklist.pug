@@ -1,0 +1,124 @@
+doctype html
+html
+  head
+    title Finance IQ — My Checklist
+    style.
+      :root {
+        --accent: #8E758A;
+        --bg: #FAF8F4;
+        --card: #BAC6B2;
+        --border: #BAC6B2;
+        --text: #68405F;
+        --muted: #858E7B;
+        --radius: 14px;
+      }
+      body { background: var(--bg); color: var(--text); font-family: 'Space Mono', monospace; min-height: 100vh; padding: 2rem; }
+      .container { max-width: 720px; margin: 0 auto; }
+      .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; background: linear-gradient(135deg, #8E758A, #C4B8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; }
+      .tagline { text-align: center; color: var(--muted); font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; }
+      .user-line { text-align: center; font-size: 0.82rem; color: var(--muted); margin-bottom: 0.5rem; }
+      .progress-summary { text-align: center; font-size: 0.82rem; color: var(--muted); margin-bottom: 2rem; }
+      .section-header { display: flex; align-items: center; gap: 0.6rem; margin: 1.8rem 0 0.8rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--border); }
+      .section-header.quiz1 { border-color: #8E758A; }
+      .section-header.quiz2 { border-color: #6a9e6a; }
+      .section-icon { font-size: 1.1rem; }
+      .section-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--text); }
+      .section-count { margin-left: auto; font-size: 0.72rem; color: var(--muted); background: #FAF8F4; padding: 2px 10px; border-radius: 50px; border: 1px solid var(--border); }
+      .item-list { display: flex; flex-direction: column; gap: 0.7rem; }
+      .item-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.2rem; display: flex; align-items: center; gap: 1rem; transition: opacity 0.2s, border-color 0.2s; cursor: pointer; border-left: 4px solid #8E758A; }
+      .item-card.quiz2-item { border-left-color: #6a9e6a; }
+      .item-card.done { opacity: 0.55; }
+      .item-card:hover { filter: brightness(0.97); }
+      .check-box { width: 22px; height: 22px; border-radius: 6px; border: 2px solid var(--accent); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: background 0.15s; background: transparent; }
+      .item-card.done .check-box { background: #6a9e6a; border-color: #6a9e6a; color: #fff; }
+      .item-text { font-size: 0.88rem; color: var(--text); flex: 1; }
+      .item-card.done .item-text { text-decoration: line-through; color: var(--muted); }
+      .item-date { font-size: 0.7rem; color: var(--muted); white-space: nowrap; }
+      .empty-section { color: var(--muted); font-size: 0.82rem; padding: 0.8rem 1rem; font-style: italic; }
+      .btn-row { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+      .btn { padding: 12px 24px; border-radius: 50px; border: none; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.88rem; cursor: pointer; text-decoration: none; transition: transform 0.15s; display: inline-block; text-align: center; }
+      .btn-primary { background: var(--accent); color: #FAF8F4; }
+      .btn-green { background: #6a9e6a; color: #FAF8F4; }
+      .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+      .btn:hover { transform: translateY(-2px); }
+
+  body
+    .container
+      .logo Finance IQ
+      p.tagline My Improvement Checklist
+      p.user-line 👤 #{username}
+
+      - var doneCount = items.filter(i => i.completed).length
+      p.progress-summary #{doneCount} of #{items.length} completed ✅
+
+      - var quiz1Items = items.filter(i => i.task.startsWith('Study:'))
+      - var quiz2Items = items.filter(i => i.task.startsWith('Improve:'))
+      - var otherItems = items.filter(i => !i.task.startsWith('Study:') && !i.task.startsWith('Improve:'))
+
+      if items.length === 0
+        .empty-section(style="text-align:center;padding:2rem")
+          p You have no checklist items yet.
+          p Complete a quiz and save your results to generate your personal checklist.
+
+      else
+
+        .section-header.quiz1
+          span.section-icon 
+          span.section-title Knowledge Quiz — Topics to Study
+          span.section-count #{quiz1Items.length} item#{quiz1Items.length !== 1 ? 's' : ''}
+
+        if quiz1Items.length === 0
+          p.empty-section No Knowledge Quiz items yet. Take the quiz and save your results.
+        else
+          .item-list
+            each item in quiz1Items
+              .item-card.quiz1-item(id="item-" + item.id class=item.completed ? 'done' : '' onclick="toggleItem(" + item.id + ")")
+                .check-box #{item.completed ? '✓' : ''}
+                span.item-text #{item.task.replace('Study: ', '')}
+                if item.lastCompletedAt
+                  span.item-date ✅ #{new Date(item.lastCompletedAt).toLocaleDateString()}
+
+        .section-header.quiz2
+          span.section-icon 
+          span.section-title Self Assessment — Areas to Improve
+          span.section-count #{quiz2Items.length} item#{quiz2Items.length !== 1 ? 's' : ''}
+
+        if quiz2Items.length === 0
+          p.empty-section No Self Assessment items yet. Take the self assessment and submit.
+        else
+          .item-list
+            each item in quiz2Items
+              .item-card.quiz2-item(id="item-" + item.id class=item.completed ? 'done' : '' onclick="toggleItem(" + item.id + ")")
+                .check-box #{item.completed ? '✓' : ''}
+                span.item-text #{item.task.replace('Improve: ', '')}
+                if item.lastCompletedAt
+                  span.item-date ✅ #{new Date(item.lastCompletedAt).toLocaleDateString()}
+
+        if otherItems.length > 0
+          .section-header
+            span.section-icon 📋
+            span.section-title Other
+            span.section-count #{otherItems.length} item#{otherItems.length !== 1 ? 's' : ''}
+          .item-list
+            each item in otherItems
+              .item-card(id="item-" + item.id class=item.completed ? 'done' : '' onclick="toggleItem(" + item.id + ")")
+                .check-box #{item.completed ? '✓' : ''}
+                span.item-text #{item.task}
+                if item.lastCompletedAt
+                  span.item-date ✅ #{new Date(item.lastCompletedAt).toLocaleDateString()}
+
+      .btn-row
+        a.btn.btn-secondary(href="/") ← Back to Home
+        a.btn.btn-primary(href="/Quiz1/quiz1Q") Retake Knowledge Quiz
+        a.btn.btn-green(href="/Quiz2/quiz2Q") Retake Self Assessment
+
+    script.
+      async function toggleItem(id) {
+        const res = await fetch('/checklist/toggle', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id }),
+        });
+        const data = await res.json();
+        if (data.success) { location.reload(); }
+      }

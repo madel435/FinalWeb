@@ -1,0 +1,183 @@
+doctype html
+html
+  head
+    title Finance IQ — Quiz 1 Results
+    style.
+      :root {
+        --accent: #8E758A;
+        --bg: #FAF8F4;
+        --card: #BAC6B2;
+        --border: #BAC6B2;
+        --text: #68405F;
+        --muted: #858E7B;
+        --radius: 14px;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Space Mono', monospace;
+        min-height: 100vh;
+        padding: 2rem;
+      }
+      .container { max-width: 760px; margin: 0 auto; }
+      .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2rem; background: linear-gradient(135deg, #8E758A, #C4B8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin-bottom: 0.3rem; }
+      .tagline { text-align: center; color: var(--muted); font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 2rem; }
+
+      /* Score circle */
+      .score-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 1.5rem 0 2rem;
+      }
+      .score-circle {
+        width: 140px;
+        height: 140px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #8E758A, #C4B8D4);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #FAF8F4;
+        margin-bottom: 0.8rem;
+        box-shadow: 0 8px 30px rgba(142,117,138,0.3);
+      }
+      .score-pct { font-family: 'Syne', sans-serif; font-size: 2.4rem; font-weight: 800; line-height: 1; }
+      .score-sub { font-size: 0.72rem; opacity: 0.85; letter-spacing: 0.1em; }
+      .score-raw { color: var(--muted); font-size: 0.85rem; }
+
+      /* Results list */
+      .results-list { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 2rem; }
+      .result-card {
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        padding: 1rem 1.2rem;
+        background: var(--card);
+      }
+      .result-card.correct { border-left: 4px solid #6a9e6a; }
+      .result-card.wrong { border-left: 4px solid #b06060; }
+      .result-top { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.3rem; }
+      .result-icon { font-size: 1.1rem; }
+      .q-badge { font-size: 0.7rem; background: #8E758A; color: #FAF8F4; padding: 2px 7px; border-radius: 50px; font-family: 'Syne', sans-serif; font-weight: 700; }
+      .result-cat { font-size: 0.8rem; color: var(--muted); font-family: 'Syne', sans-serif; }
+      .result-q { font-size: 0.9rem; color: var(--text); margin-bottom: 0.3rem; }
+      .result-answer { font-size: 0.82rem; }
+      .result-answer.your { color: #b06060; }
+      .result-answer.correct-ans { color: #6a9e6a; }
+      .result-explain { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; font-style: italic; }
+
+      /* Buttons */
+      .btn-row {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-top: 1.5rem;
+      }
+      .btn {
+        padding: 13px 26px;
+        border-radius: 50px;
+        border: none;
+        font-family: 'Syne', sans-serif;
+        font-weight: 700;
+        font-size: 0.9rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: transform 0.15s, box-shadow 0.15s;
+        display: inline-block;
+        text-align: center;
+      }
+      .btn-primary { background: var(--accent); color: #FAF8F4; }
+      .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+      .btn-green { background: #6a9e6a; color: #FAF8F4; }
+      .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(142,117,138,0.2); }
+      #save-msg { text-align: center; color: #6a9e6a; font-size: 0.82rem; margin-top: 0.8rem; display: none; }
+
+  body
+    .container
+      .logo Finance IQ
+      p.tagline Quiz 1 Results
+
+      .score-wrap
+        .score-circle
+          span.score-pct#score-pct —
+          span.score-sub CORRECT
+        p.score-raw#score-raw Loading…
+
+      .results-list#results-list
+        p(style="text-align:center;color:var(--muted)") Loading results…
+
+      .btn-row
+        a.btn.btn-secondary(href="/") ← Back to Home
+        button.btn.btn-primary#save-btn(onclick="saveResults()") 💾 Save Results
+        a.btn.btn-green(href="/Quiz2/login") Take Self Assessment →
+
+      p#save-msg ✅ Results saved! Check your checklist.
+
+    script.
+      const questions = JSON.parse(sessionStorage.getItem('q1questions') || '[]');
+      const answers   = JSON.parse(sessionStorage.getItem('q1answers')   || '{}');
+      const loggedIn  = !{JSON.stringify(loggedIn)};
+
+      function render() {
+        if (!questions.length) {
+          document.getElementById('results-list').innerHTML = '<p style="text-align:center;color:var(--muted)">No results found. <a href="/Quiz1/quiz1Q" style="color:#8E758A">Take the quiz</a>.</p>';
+          return;
+        }
+        let correct = 0;
+        const wrongTopics = [];
+        let html = '';
+        for (let i = 0; i < questions.length; i++) {
+          const q = questions[i];
+          const chosen = answers[i];
+          const isCorrect = chosen === q.ans;
+          if (isCorrect) correct++;
+          else wrongTopics.push(q.cat);
+          html += `
+            <div class="result-card ${isCorrect ? 'correct' : 'wrong'}">
+              <div class="result-top">
+                <span class="result-icon">${isCorrect ? '✅' : '❌'}</span>
+                <span class="q-badge">Q${i+1}</span>
+                <span class="result-cat">${q.cat}</span>
+              </div>
+              <p class="result-q">${q.q}</p>
+              ${!isCorrect ? `<p class="result-answer your">Your answer: ${q.opts[chosen] !== undefined ? q.opts[chosen] : 'Not answered'}</p>` : ''}
+              <p class="result-answer correct-ans">Correct: ${q.opts[q.ans]}</p>
+              <p class="result-explain">${q.explain}</p>
+            </div>`;
+        }
+        const pct = Math.round((correct / questions.length) * 100);
+        document.getElementById('score-pct').textContent = pct + '%';
+        document.getElementById('score-raw').textContent = correct + ' / ' + questions.length + ' correct';
+        document.getElementById('results-list').innerHTML = html;
+        window._wrongTopics = wrongTopics;
+        window._correct = correct;
+        window._total = questions.length;
+      }
+
+      window.saveResults = async function() {
+        if (!loggedIn) {
+          sessionStorage.setItem('q1answers', JSON.stringify(answers));
+          window.location.href = '/Quiz2/login?redirect=/Quiz1/results';
+          return;
+        }
+        try {
+          const res = await fetch('/Quiz1/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              score: window._correct,
+              total: window._total,
+              wrongTopics: window._wrongTopics,
+            }),
+          });
+          const data = await res.json();
+          if (data.success) {
+            document.getElementById('save-msg').style.display = 'block';
+            document.getElementById('save-btn').textContent = '✅ Saved';
+          }
+        } catch(e) { alert('Could not save. Please try again.'); }
+      };
+
+      render();

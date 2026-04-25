@@ -1,0 +1,214 @@
+doctype html
+html
+  head
+    title Finance IQ — Quiz 1
+    style.
+      :root {
+        --accent: #8E758A;
+        --bg: #FAF8F4;
+        --card: #BAC6B2;
+        --border: #BAC6B2;
+        --text: #68405F;
+        --muted: #858E7B;
+        --radius: 14px;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Space Mono', monospace;
+        min-height: 100vh;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .container { max-width: 880px; width: 100%; }
+      .header { text-align: center; margin-bottom: 1.5rem; }
+      .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 2.4rem; background: linear-gradient(135deg, #8E758A, #C4B8D4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.4rem; }
+      .tagline { color: var(--muted); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; }
+
+      /* Progress bar */
+      .progress-wrap {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 50px;
+        height: 36px;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #8E758A, #C4B8D4);
+        border-radius: 50px;
+        transition: width 0.4s ease;
+        width: 0%;
+      }
+      .progress-money {
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1.4rem;
+        transition: left 0.4s ease;
+        left: 0%;
+        pointer-events: none;
+      }
+      .progress-label {
+        text-align: center;
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-bottom: 1.2rem;
+        margin-top: -0.8rem;
+      }
+
+      /* Quiz layout */
+      #quiz-container { display: flex; flex-direction: column; gap: 1rem; align-items: center; }
+      .question-block {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.2rem 1.4rem;
+        width: 100%;
+        max-width: 720px;
+        color: var(--text);
+        transition: border-color 0.2s;
+      }
+      .question-block.answered { border-color: #8E758A; }
+      .q-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; }
+      .q-num-badge {
+        background: #8E758A;
+        color: #FAF8F4;
+        font-family: 'Syne', sans-serif;
+        font-weight: 700;
+        font-size: 0.7rem;
+        padding: 2px 8px;
+        border-radius: 50px;
+        white-space: nowrap;
+      }
+      .question-block h3 { color: var(--accent); font-family: 'Syne', sans-serif; margin: 0; font-size: 0.9rem; }
+      .question-block p { margin-bottom: 0.6rem; color: var(--text); font-size: 0.92rem; margin-top: 0.3rem; }
+      .question-block label { display: block; margin: 0.35rem 0; color: var(--text); cursor: pointer; font-size: 0.88rem; }
+      .question-block label:hover { color: var(--accent); }
+      @media (max-width:640px) { .question-block { padding: 1rem; } }
+
+      /* Bottom buttons */
+      .btn-row {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+      }
+      .btn {
+        padding: 14px 28px;
+        border-radius: 50px;
+        border: none;
+        font-family: 'Syne', sans-serif;
+        font-weight: 700;
+        font-size: 0.95rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: transform 0.15s, box-shadow 0.15s;
+        display: inline-block;
+        text-align: center;
+      }
+      .btn-primary { background: var(--accent); color: #FAF8F4; }
+      .btn-secondary { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+      .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(142,117,138,0.2); }
+      .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  body
+    .container
+      .header
+        .logo Finance IQ
+        p.tagline Financial knowledge check
+
+      .progress-wrap
+        .progress-fill#progress-fill
+        .progress-money#progress-money $
+      p.progress-label#progress-label 0 of 10 answered
+
+      #quiz-container
+
+      .btn-row
+        a.btn.btn-secondary#login-save-btn(href="/Quiz2/login?redirect=/Quiz1/quiz1Q") 🔐 Login &amp; Save
+        button.btn.btn-primary#results-btn(disabled onclick="goToResults()") Go To Results →
+
+    script(type="module")
+      |import { questions } from "/q1Questions.js";
+      |
+      |const total = questions.length;
+      |const answers = {};
+      |const progressFill = document.getElementById('progress-fill');
+      |const progressMoney = document.getElementById('progress-money');
+      |const progressLabel = document.getElementById('progress-label');
+      |const resultsBtn = document.getElementById('results-btn');
+      |const loginSaveBtn = document.getElementById('login-save-btn');
+      |
+      |// Store questions in sessionStorage for results page
+      |sessionStorage.setItem('q1questions', JSON.stringify(questions));
+      |
+      |function updateProgress() {
+      |  const answered = Object.keys(answers).length;
+      |  const pct = total > 0 ? (answered / total) * 100 : 0;
+      |  progressFill.style.width = pct + '%';
+      |  progressMoney.style.left = Math.min(pct, 96) + '%';
+      |  progressLabel.textContent = answered + ' of ' + total + ' answered';
+      |  resultsBtn.disabled = answered < total;
+      |  if (answered >= total) {
+      |    loginSaveBtn.textContent = '🔐 Login & Save';
+      |  }
+      |}
+      |
+      |function renderQuiz() {
+      |  const container = document.getElementById('quiz-container');
+      |  container.innerHTML = '';
+      |  for (let i = 0; i < questions.length; i++) {
+      |    const q = questions[i];
+      |    const block = document.createElement('div');
+      |    block.className = 'question-block';
+      |    block.id = 'qblock-' + i;
+      |    block.innerHTML = `
+      |      <div class="q-header">
+      |        <span class="q-num-badge">Q${i + 1}</span>
+      |        <h3>${q.cat}</h3>
+      |      </div>
+      |      <p>${q.q}</p>
+      |      ${q.opts.map((opt, idx) => `
+      |        <label>
+      |          <input type="radio" name="q${i}" value="${idx}" data-q="${i}">
+      |          ${opt}
+      |        </label>
+      |      `).join('')}
+      |    `;
+      |    container.appendChild(block);
+      |  }
+      |  document.querySelectorAll('input[type=radio]').forEach(radio => {
+      |    radio.addEventListener('change', () => {
+      |      const qi = parseInt(radio.dataset.q);
+      |      answers[qi] = parseInt(radio.value);
+      |      document.getElementById('qblock-' + qi).classList.add('answered');
+      |      updateProgress();
+      |    });
+      |  });
+      |}
+      |
+      |window.goToResults = function() {
+      |  sessionStorage.setItem('q1answers', JSON.stringify(answers));
+      |  window.location.href = '/Quiz1/results';
+      |};
+      |
+      |// Update login/save button if already logged in
+      |const loggedIn = !{JSON.stringify(loggedIn)};
+      |if (loggedIn) {
+      |  loginSaveBtn.textContent = '💾 Save Results';
+      |  loginSaveBtn.removeAttribute('href');
+      |  loginSaveBtn.addEventListener('click', (e) => {
+      |    e.preventDefault();
+      |    sessionStorage.setItem('q1answers', JSON.stringify(answers));
+      |    window.location.href = '/Quiz1/results?save=1';
+      |  });
+      |}
+      |
+      |renderQuiz();
+      |updateProgress();

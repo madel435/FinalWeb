@@ -1,0 +1,125 @@
+doctype html
+html
+  head
+    title Finance IQ — Register
+    style.
+      :root {
+        --accent: #8E758A;
+        --bg: #FAF8F4;
+        --card: #BAC6B2;
+        --border: #BAC6B2;
+        --text: #68405F;
+        --muted: #858E7B;
+        --radius: 14px;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Space Mono', monospace;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .container {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 2.5rem;
+        width: 100%;
+        max-width: 400px;
+        box-shadow: 0 0 40px rgba(0,0,0,0.1);
+      }
+      .logo {
+        font-family: 'Syne', sans-serif;
+        font-weight: 800;
+        font-size: 2rem;
+        background: linear-gradient(135deg, #8E758A, #C4B8D4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.3rem;
+      }
+      .subtitle {
+        color: var(--muted);
+        font-size: 0.8rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 2rem;
+      }
+      label {
+        display: block;
+        font-size: 0.85rem;
+        margin-bottom: 0.4rem;
+        color: var(--text);
+      }
+      input {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: #FAF8F4;
+        color: #68405F;
+        font-size: 0.9rem;
+        margin-bottom: 1.2rem;
+        box-sizing: border-box;
+      }
+      .btn {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 50px;
+        background: var(--accent);
+        color: #FAF8F4;
+        font-family: 'Syne', sans-serif;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .btn:hover { transform: translateY(-2px); }
+      .error {
+        background: #ffe0e0;
+        color: #c00;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+      }
+      .links {
+        text-align: center;
+        margin-top: 1.2rem;
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+      .links a { color: var(--accent); text-decoration: none; }
+
+  body
+    .container
+      .logo Finance IQ
+      p.subtitle Create your account
+
+      if error
+        .error= error
+
+      form(action="/register" method="POST")
+        label(for="name") Name
+        input(type="text" name="name" id="name" placeholder="Your name")
+
+        label(for="username") Username
+        input(type="text" name="username" id="username" required)
+
+        label(for="password") Password
+        input(type="password" name="password" id="password" required)
+
+        label(for="email") Email (optional)
+        input(type="email" name="email" id="email" placeholder="for reminders")
+
+        button.btn(type="submit") Create Account
+
+      .links
+        | Already have an account? &nbsp;
+        a(href="/Quiz2/login") Sign in
+        br
+        br
+        a(href="/") ← Back to Home
